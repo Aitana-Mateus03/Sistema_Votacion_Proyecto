@@ -50,7 +50,7 @@ class EstudianteRepository:
     def obtener_todos(self):
         return self.db.query(EstudianteModel).all()
 
-    # ⭐ AQUÍ ESTÁ LA SOLUCIÓN AL PROBLEMA N+1 USANDO JOIN (joinedload) ⭐
+    #  AQUÍ ESTÁ LA SOLUCIÓN AL PROBLEMA N+1 USANDO JOIN (joinedload) 
     def obtener_estudiantes_con_carrera_join(self):
         """
         Trae los estudiantes junto con su respectiva carrera en UNA SOLA consulta SQL,
