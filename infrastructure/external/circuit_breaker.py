@@ -1,6 +1,4 @@
-
 import time
-
 
 class CircuitBreaker:
     def __init__(self, failure_threshold=3, recovery_timeout=10):

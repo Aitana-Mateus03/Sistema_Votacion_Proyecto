@@ -1,6 +1,4 @@
-
 import duckdb
-
 
 class DuckDBAnalytics:
 

@@ -51,3 +51,28 @@ def test_academic_service_with_mocks():
 
     assert service.list_careers() == ["Ingeniería"]
     assert service.list_students() == ["Carlos"]
+
+def test_get_all_candidates_with_mock():
+    repository = MagicMock()
+    expected = [
+        Candidate(1, "Camila", "Mejorar laboratorios", 101),
+        Candidate(2, "Carlos", "Mejorar biblioteca", 101)
+    ]
+    repository.find_all.return_value = expected
+
+    service = CandidateService(repository)
+    result = service.get_all_candidates()
+
+    assert result == expected
+    repository.find_all.assert_called_once()
+
+
+def test_delete_candidate_with_mock():
+    repository = MagicMock()
+    repository.delete.return_value = True
+
+    service = CandidateService(repository)
+    result = service.delete_candidate(1)
+
+    assert result is True
+    repository.delete.assert_called_once_with(1)

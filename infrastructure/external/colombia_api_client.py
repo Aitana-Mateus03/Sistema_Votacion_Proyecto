@@ -1,4 +1,3 @@
-
 import httpx
 
 from infrastructure.external.circuit_breaker import (

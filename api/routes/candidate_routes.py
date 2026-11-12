@@ -1,3 +1,4 @@
+
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from api.schemas.candidate_schemas import (
@@ -10,6 +11,8 @@ from application.services.candidate_service import CandidateService
 from infrastructure.persistence.memory_candidate_repository import (
     MemoryCandidateRepository
 )
+
+from api.auth.dependencies import require_role
 
 
 router = APIRouter(
@@ -31,6 +34,7 @@ def get_candidate_service():
 )
 def crear_candidato(
     candidato: CandidateCreate,
+    current_user: dict = Depends(require_role("ADMIN")),
     service: CandidateService = Depends(get_candidate_service)
 ):
     return service.create_candidate(
@@ -70,6 +74,7 @@ def obtener_candidato(
 )
 def eliminar_candidato(
     candidato_id: int,
+    current_user: dict = Depends(require_role("ADMIN")),
     service: CandidateService = Depends(get_candidate_service)
 ):
     if not service.delete_candidate(candidato_id):
