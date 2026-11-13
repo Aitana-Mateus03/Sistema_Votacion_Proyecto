@@ -9,6 +9,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      JWT_SECRET_KEY: "super-secret-test-key-for-ci-pipeline-12345"
 
     steps:
       - name: Descargar repositorio
