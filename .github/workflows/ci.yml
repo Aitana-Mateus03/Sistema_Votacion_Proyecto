@@ -44,8 +44,6 @@ jobs:
 
       - name: Construir imagen Docker optimizada (Multi-stage)
         run: |
-          # Construimos la imagen usando el Dockerfile de la raíz
           docker build -t sistema-votacion:latest .
-          
           echo "=== COMPARATIVA DE TAMAÑO DE IMAGEN DOCKER ==="
           docker images sistema-votacion:latest
