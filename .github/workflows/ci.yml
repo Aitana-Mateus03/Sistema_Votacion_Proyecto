@@ -42,6 +42,8 @@ jobs:
     name: 2. Build & Docker Compose
     needs: test
     runs-on: ubuntu-latest
+    env:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v4
@@ -51,8 +53,8 @@ jobs:
 
       - name: Construir imagen Docker optimizada
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/sistema-votacion:latest .
-          docker images ${{ secrets.DOCKERHUB_USERNAME }}/sistema-votacion:latest
+          docker build -t ${DOCKERHUB_USERNAME}/sistema-votacion:latest .
+          docker images ${DOCKERHUB_USERNAME}/sistema-votacion:latest
 
       - name: Validar orquestación Docker Compose
         run: |
