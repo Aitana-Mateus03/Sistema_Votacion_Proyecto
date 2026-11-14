@@ -66,7 +66,6 @@ jobs:
           tags: |
             ${{ env.DOCKERHUB_USERNAME }}/sistema-votacion:latest
             ${{ env.DOCKERHUB_USERNAME }}/sistema-votacion:${{ github.sha }}
-
   # ETAPA 3: VALIDACIÓN DOCKER COMPOSE
   validate-compose:
     name: 3. Validate Docker Compose
