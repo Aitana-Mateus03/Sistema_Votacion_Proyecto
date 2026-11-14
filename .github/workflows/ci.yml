@@ -9,8 +9,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      JWT_SECRET_KEY: "super-secret-test-key-for-ci-pipeline-12345"
 
     steps:
       - name: Descargar repositorio
@@ -21,6 +19,11 @@ jobs:
         with:
           python-version: '3.12'
           cache: 'pip'
+
+      - name: Crear archivo .env para pruebas
+        run: |
+          echo "JWT_SECRET_KEY=super-secret-test-key-for-ci-pipeline-12345" >> .env
+          echo "GEMINI_API_KEY=mock-gemini-api-key-for-testing" >> .env
 
       - name: Instalar dependencias
         run: |
