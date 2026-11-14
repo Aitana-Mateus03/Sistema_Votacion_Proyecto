@@ -52,3 +52,10 @@ jobs:
           docker build -t sistema-votacion:latest .
           echo "=== COMPARATIVA DE TAMAÑO DE IMAGEN DOCKER ==="
           docker images sistema-votacion:latest
+
+      - name: Validar orquestación con Docker Compose (App + BD + Health Checks)
+        run: |
+          docker compose up -d --wait
+          echo "=== ESTADO DE LOS SERVICIOS ORQUESTADOS ==="
+          docker compose ps
+          docker compose down -v

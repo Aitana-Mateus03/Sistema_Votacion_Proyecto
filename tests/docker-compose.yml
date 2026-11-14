@@ -1,0 +1,53 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: votacion_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password_123}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-sistema_votacion}
+      MYSQL_USER: ${MYSQL_USER:-votacion_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-votacion_pass_123}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - votacion_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: votacion_api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: mysql+pymysql://${MYSQL_USER:-votacion_user}:${MYSQL_PASSWORD:-votacion_pass_123}@db:3306/${MYSQL_DATABASE:-sistema_votacion}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-super-secret-test-key-for-ci-pipeline-12345}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-mock-gemini-api-key-for-testing}
+    ports:
+      - "8000:8000"
+    networks:
+      - votacion_net
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/docs')"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  mysql_data:
+
+networks:
+  votacion_net:
+    driver: bridge
